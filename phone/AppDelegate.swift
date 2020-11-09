@@ -7,14 +7,36 @@
 
 import UIKit
 import CoreData
+import PushKit
 
 @main
-class AppDelegate: UIResponder, UIApplicationDelegate {
-
-
-
+class AppDelegate: UIResponder, UIApplicationDelegate, PKPushRegistryDelegate {
+        
+        func pushRegistry(_ registry: PKPushRegistry,
+                          didUpdate pushCredentials: PKPushCredentials,
+                          for type: PKPushType) {
+        }
+        
+        func pushRegistry(_ registry: PKPushRegistry,
+                          didReceiveIncomingPushWith payload: PKPushPayload,
+                          for type: PKPushType,
+                          completion: @escaping () -> Void){
+                completion()
+        }
+        
+        // Register for VoIP notifications
+        func voipRegistration() {
+                let voipRegistry: PKPushRegistry = PKPushRegistry(queue: nil)
+                voipRegistry.delegate = self
+                voipRegistry.desiredPushTypes = [PKPushType.voIP]
+        }
+        
+        
+        
+        
         func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
                 // Override point for customization after application launch.
+                self.voipRegistration()
                 return true
         }
 
